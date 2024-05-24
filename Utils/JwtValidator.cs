@@ -1,50 +1,40 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
 public class JwtValidator
 {
-    private string _secretKey = "Tralala"; // Your secret key used for token validation
+    private readonly string _secret;
 
-
+    public JwtValidator(string secret)
+    {
+        _secret = secret;
+    }
 
     public ClaimsPrincipal ValidateJwtToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var validationParameters = GetValidationParameters();
+        var key = System.Text.Encoding.ASCII.GetBytes(_secret);
 
         try
         {
-            // Validate the token
-            SecurityToken validatedToken;
-            var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
-
-            // Check if the token is a JwtSecurityToken
-            if (validatedToken is JwtSecurityToken jwtSecurityToken)
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
-                // You can access token properties here
-                var claims = jwtSecurityToken.Claims;
-                // Do something with claims if needed
-            }
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
 
-            return claimsPrincipal;
+            return principal;
         }
-        catch (SecurityTokenException ex)
+        catch
         {
+            // Token validation failed
             return null;
         }
     }
-
-    private TokenValidationParameters GetValidationParameters()
-    {
-        return new TokenValidationParameters
-        {
-            ValidateIssuer = false, // Set to true if you want to validate the issuer
-            ValidateAudience = false, // Set to true if you want to validate the audience
-            ValidateLifetime = true, // Check if the token is expired
-            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_secretKey))
-        };
-    }
 }
-

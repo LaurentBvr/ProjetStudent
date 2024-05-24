@@ -24,7 +24,7 @@ namespace StudentBackend.Models.DTO
                 Email = student.Email,
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Password = student.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(student.Password),
                 Role = Role.Student
 
             };
@@ -37,10 +37,23 @@ namespace StudentBackend.Models.DTO
                 Email = instructor.Email,
                 FirstName = instructor.FirstName,
                 LastName = instructor.LastName,
-                Password = instructor.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(instructor.Password),
                 Role = Role.Instructor
             };
         }
+        public static Person MapAddAdmin(this CreateOrUpdatePerson admin)
+        {
+            return new Person
+            {
+                PersonId = GenerateMatricule(admin),
+                Email = admin.Email,
+                FirstName = admin.FirstName,
+                LastName = admin.LastName,
+                Password = BCrypt.Net.BCrypt.HashPassword(admin.Password),
+                Role = Role.Admin
+            };
+        }
+
         private static string GenerateMatricule(CreateOrUpdatePerson person)
         {
             return person.FirstName.Substring(0, 2) + person.LastName.Substring(0, 2) + new Random().NextInt64(100, 999);

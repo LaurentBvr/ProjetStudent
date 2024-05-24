@@ -68,7 +68,7 @@ namespace StudentBackend.Controllers
         }
 
         [HttpDelete("{instructorId}")]
-        public async Task<IActionResult> RemoveInstructor(Guid instructorId)
+        public async Task<IActionResult> RemoveInstructor(string instructorId)
         {
             try
             {

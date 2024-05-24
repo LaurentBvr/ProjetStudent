@@ -27,8 +27,9 @@ namespace ProjetEtudiantBackend.Entity
             student.Email = newStudent.Email;
             student.FirstName = newStudent.FirstName;
             student.LastName = newStudent.LastName;
-            student.Password = newStudent.Password;
-            
+            student.Password = BCrypt.Net.BCrypt.HashPassword(student.Password);
+
+
         }
         public static void MapUpdateInstructor(this Person instructor, CreateOrUpdatePerson newInstructor)
         {
@@ -37,7 +38,17 @@ namespace ProjetEtudiantBackend.Entity
             instructor.Email = newInstructor.Email;
             instructor.FirstName = newInstructor.FirstName;
             instructor.LastName = newInstructor.LastName;
-            instructor.Password = newInstructor.Password;
+            instructor.Password = BCrypt.Net.BCrypt.HashPassword(instructor.Password);
+
+        }
+        public static void MapUpdateAdmin(this Person admin, CreateOrUpdatePerson newAdmin)
+        {
+
+
+            admin.Email = newAdmin.Email;
+            admin.FirstName = newAdmin.FirstName;
+            admin.LastName = newAdmin.LastName;
+            admin.Password = BCrypt.Net.BCrypt.HashPassword(admin.Password);
 
         }
     }

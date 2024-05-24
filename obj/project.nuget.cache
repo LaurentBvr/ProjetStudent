@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "fDV3pan5+3EPwiEgpwBsA29Go59LIF/eajjBaDmms87CdS3ecZQHnXPJk8CEvCkQxMMN7H6xfnU40GKmP++7xQ==",
+  "dgSpecHash": "xhTzurachGLnKbfClVg+MbfutG6Vx2mKD5pnM42m+qt/JJfGGg6lK016ibfB4xZE5ZHDqiZFq3vzvocaXeDOQg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Biver\\source\\repos\\ProjetAccords\\Api\\StudentBackend\\StudentBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Biver\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Biver\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Biver\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Biver\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Biver\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Biver\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

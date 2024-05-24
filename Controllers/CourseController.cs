@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetEtudiantBackend.Entity;
@@ -19,6 +20,7 @@ namespace StudentBackend.Controllers
             _dbContext = dbContext;
         }
 
+       
         [HttpGet]
         public async Task<IActionResult> GetCourses()
         {
@@ -26,6 +28,7 @@ namespace StudentBackend.Controllers
             return Ok(courses);
         }
 
+        
         [HttpGet("{courseId}")]
         public async Task<IActionResult> GetCourse(Guid courseId)
         {
@@ -33,6 +36,20 @@ namespace StudentBackend.Controllers
             return course != null ? Ok(course) : NotFound();
         }
 
+        
+        [HttpGet("instructor/{instructorId}")]
+        public async Task<IActionResult> GetCourseInstructor(string instructorId)
+        {
+            var courses = await GetCoursesByInstructorIdAsync(instructorId);
+            if (courses == null || courses.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(courses);
+        }
+
+
+        
         [HttpPost]
         public IActionResult CreateCourse([FromBody] CreateOrUpdateCourse course)
         {
@@ -50,6 +67,8 @@ namespace StudentBackend.Controllers
             }
         }
 
+
+        
         [HttpPut("{courseId}")]
         public async Task<IActionResult> UpdateCourse(Guid courseId, [FromBody] CreateOrUpdateCourse updateCourse)
         {
@@ -68,6 +87,8 @@ namespace StudentBackend.Controllers
             }
         }
 
+
+        
         [HttpDelete("{courseId}")]
         public async Task<IActionResult> RemoveCourse(Guid courseId)
         {
@@ -86,9 +107,18 @@ namespace StudentBackend.Controllers
             }
         }
 
+ 
         private async Task<Course> GetCourseAsync(Guid courseId)
         {
             return await _dbContext.Courses.FirstOrDefaultAsync(c => c.CourseId == courseId);
+        }
+
+
+        private async Task<List<Course>> GetCoursesByInstructorIdAsync(string instructorId)
+        {
+            return await _dbContext.Courses
+                                   .Where(c => c.InstructorId == instructorId)
+                                   .ToListAsync();
         }
     }
 }

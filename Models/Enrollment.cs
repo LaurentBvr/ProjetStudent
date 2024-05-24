@@ -6,7 +6,7 @@
 
         public Guid CourseId { get; set; }
 
-        public Guid PersonId { get; set; }
+        public string StudentId { get; set; }
 
         public decimal Progress { get; set; } // Sa progression
 

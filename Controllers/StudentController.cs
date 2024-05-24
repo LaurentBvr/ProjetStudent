@@ -58,7 +58,7 @@ namespace StudentBackend.Controllers
         }
 
         [HttpDelete("{studentId}")]
-        public async Task<IActionResult> RemoveStudent(Guid studentId)
+        public async Task<IActionResult> RemoveStudent(string studentId)
         {
             
            
