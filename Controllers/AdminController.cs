@@ -41,7 +41,12 @@ namespace StudentBackend.Controllers
                 var adminMapped = admin.MapAddAdmin();
                 _dbContext.People.Add(adminMapped);
                 _dbContext.SaveChanges();
-                return Ok(adminMapped.PersonId);
+                if (adminMapped == null)
+                {
+                    return StatusCode(500);
+                }
+
+                return CreatedAtAction(nameof(GetAdmin), new { adminId = adminMapped.PersonId }, adminMapped);
             }
             catch (Exception ex)
             {
@@ -59,7 +64,7 @@ namespace StudentBackend.Controllers
 
                 admin.MapUpdateAdmin(updateAdmin);
                 _dbContext.SaveChanges();
-                return Ok();
+                return Ok(admin);
             }
             catch (Exception ex)
             {

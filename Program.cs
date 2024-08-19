@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjetEtudiantBackend.Entity;
 using System.Text;
@@ -63,3 +64,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

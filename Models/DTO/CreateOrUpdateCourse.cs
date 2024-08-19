@@ -9,6 +9,9 @@ namespace StudentBackend.Models.DTO
         public int CourseYear { get; set; }
 
         public string InstructorId { get; set; }
+
+
+
     }
 
     public static class CreateCourseExtension
@@ -25,7 +28,10 @@ namespace StudentBackend.Models.DTO
 
                 Assignments = new List<Assignment>(),
 
-                CourseYear = course.CourseYear
+                Inscriptions = new List<Inscription>(),
+
+                CourseYear = course.CourseYear,
+
 
             };
         }

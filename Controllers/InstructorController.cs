@@ -41,7 +41,12 @@ namespace StudentBackend.Controllers
                 var instructorMapped = instructor.MapAddInstructor();
                 _dbContext.People.Add(instructorMapped);
                 _dbContext.SaveChanges();
-                return Ok(instructorMapped.PersonId);
+                if (instructorMapped == null)
+                {
+                    return StatusCode(500);
+                }
+
+                return CreatedAtAction(nameof(GetInstructor), new { instructorId = instructorMapped.PersonId }, instructorMapped);
             }
             catch (Exception ex)
             {
@@ -59,7 +64,7 @@ namespace StudentBackend.Controllers
 
                 instructor.MapUpdateInstructor(updateInstructor);
                 _dbContext.SaveChanges();
-                return Ok();
+                return Ok(instructor);
             }
             catch (Exception ex)
             {

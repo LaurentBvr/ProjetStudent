@@ -33,6 +33,12 @@ namespace StudentBackend.Controllers
             var assignment = await GetAssignmentAsync(assignmentId);
             return assignment != null ? Ok(assignment) : NotFound();
         }
+        [HttpGet("byCourseId/{courseId}")]
+        public async Task<IActionResult> GetAssignmentsByCourseId(Guid courseId)
+        {
+            var assignments = await GetAssignmentsByCourseIdAsync(courseId);
+            return assignments != null ? Ok(assignments) : NotFound();
+        }
 
         [HttpPost]
         public IActionResult CreateAssignment([FromBody] CreateOrUpdateAssignment assignment)
@@ -42,7 +48,12 @@ namespace StudentBackend.Controllers
                 var assignmentMapped = assignment.MapAddAssignment();
                 _dbContext.Assignments.Add(assignmentMapped);
                 _dbContext.SaveChanges();
-                return Ok(assignmentMapped.AssignmentId);
+                if (assignmentMapped == null)
+                {
+                    return StatusCode(500);
+                }
+
+                return CreatedAtAction(nameof(GetAssignment), new { assignmentId = assignmentMapped.AssignmentId }, assignmentMapped);
             }
             catch (Exception ex)
             {
@@ -60,7 +71,7 @@ namespace StudentBackend.Controllers
 
                 assignment.MapUpdateAssignment(updateAssignment);
                 _dbContext.SaveChanges();
-                return Ok();
+                return Ok(assignment);
             }
             catch (Exception ex)
             {
@@ -89,6 +100,12 @@ namespace StudentBackend.Controllers
         private async Task<Assignment> GetAssignmentAsync(Guid assignmentId)
         {
             return await _dbContext.Assignments.FirstOrDefaultAsync(a => a.AssignmentId == assignmentId);
+        }
+        private async Task<List<Assignment>> GetAssignmentsByCourseIdAsync(Guid courseId)
+        {
+            return await _dbContext.Assignments
+                                   .Where(a => a.CourseId == courseId)
+                                   .ToListAsync();
         }
     }
 }

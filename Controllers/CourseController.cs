@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetEtudiantBackend.Entity;
+using StudentBackend.Models;
 using StudentBackend.Models.DTO;
 using System;
 using System.Linq;
@@ -58,8 +59,12 @@ namespace StudentBackend.Controllers
                 var courseMapped = course.MapAddCourse();
                 _dbContext.Courses.Add(courseMapped);
                 _dbContext.SaveChanges();
-                return Ok(courseMapped.CourseId);
+                if (courseMapped == null)
+                {
+                    return StatusCode(500);
+                }
 
+                return CreatedAtAction(nameof(GetCourse), new { courseId = courseMapped.CourseId }, courseMapped);
             }
             catch (Exception ex)
             {
@@ -79,7 +84,7 @@ namespace StudentBackend.Controllers
 
                 course.MapUpdateCourse(updateCourse);
                 _dbContext.SaveChanges();
-                return Ok();
+                return Ok(course);
             }
             catch (Exception ex)
             {
@@ -120,5 +125,7 @@ namespace StudentBackend.Controllers
                                    .Where(c => c.InstructorId == instructorId)
                                    .ToListAsync();
         }
+        
+
     }
 }

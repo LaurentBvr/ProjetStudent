@@ -38,10 +38,18 @@ namespace StudentBackend.Controllers
                 var studentMapped = student.MapAddStudent();
                 _dbContext.People.Add(studentMapped);
                 _dbContext.SaveChanges();
-                return Ok(studentMapped.PersonId);
+                if (studentMapped == null)
+                {
+                    return StatusCode(500);
+                }
+                
+
+                return CreatedAtAction(nameof(GetStudent), new{ studentId = studentMapped.PersonId }, studentMapped);
 
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message); 
+            }
             
         }
         [HttpPut("{studentId}")]
@@ -51,7 +59,7 @@ namespace StudentBackend.Controllers
                 var student = await GetStudentAsync(studentId);
                 student.MapUpdateStudent(updateStudent);
                 _dbContext.SaveChanges();
-                return Ok();
+                return Ok(student);
 
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
@@ -72,6 +80,7 @@ namespace StudentBackend.Controllers
             catch (Exception ex) { return BadRequest(ex.Message); }
 
         }
+        
         private async Task<Person> GetStudentAsync(string personId) { 
             return await _dbContext.People.FirstOrDefaultAsync(p => p.PersonId == personId && p.Role == Role.Student); }
     }

@@ -1,4 +1,5 @@
 ﻿using ProjetEtudiantBackend.Models;
+using StudentBackend.Models;
 using StudentBackend.Models.DTO;
 
 namespace ProjetEtudiantBackend.Entity
@@ -11,9 +12,13 @@ namespace ProjetEtudiantBackend.Entity
 
         public string Name { get; set; }
 
-        public List<Assignment> Assignments { get; set; } = new List<Assignment>();
+        public List<Assignment> Assignments { get; set; } 
+
+        public ICollection<Inscription> Inscriptions { get; set; }
 
         public int CourseYear { get; set; }
+
+       
 
     }
     public static class CourseExtension
@@ -22,6 +27,7 @@ namespace ProjetEtudiantBackend.Entity
         {
             course.Name = newCourse.Name;
             course.CourseYear = newCourse.CourseYear;
+            
         }
     }
 }

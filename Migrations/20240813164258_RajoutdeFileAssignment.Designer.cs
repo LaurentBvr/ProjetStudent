@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjetEtudiantBackend.Entity;
 
@@ -11,9 +12,11 @@ using ProjetEtudiantBackend.Entity;
 namespace StudentBackend.Migrations
 {
     [DbContext(typeof(StudentProjetContext))]
-    partial class StudentProjetContextModelSnapshot : ModelSnapshot
+    [Migration("20240813164258_RajoutdeFileAssignment")]
+    partial class RajoutdeFileAssignment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,25 +135,6 @@ namespace StudentBackend.Migrations
                     b.ToTable("FileAssignments");
                 });
 
-            modelBuilder.Entity("StudentBackend.Models.Inscription", b =>
-                {
-                    b.Property<Guid>("InscriptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("PersonId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("InscriptionId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("Inscriptions");
-                });
-
             modelBuilder.Entity("ProjetEtudiantBackend.Models.Assignment", b =>
                 {
                     b.HasOne("ProjetEtudiantBackend.Entity.Course", null)
@@ -160,22 +144,9 @@ namespace StudentBackend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StudentBackend.Models.Inscription", b =>
-                {
-                    b.HasOne("ProjetEtudiantBackend.Entity.Course", "Course")
-                        .WithMany("Inscriptions")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-                });
-
             modelBuilder.Entity("ProjetEtudiantBackend.Entity.Course", b =>
                 {
                     b.Navigation("Assignments");
-
-                    b.Navigation("Inscriptions");
                 });
 #pragma warning restore 612, 618
         }

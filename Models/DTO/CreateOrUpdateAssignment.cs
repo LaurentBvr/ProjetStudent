@@ -5,7 +5,6 @@ namespace StudentBackend.Models.DTO
 {
     public class CreateOrUpdateAssignment
     {
-        public string PersonId { get; set; }
         public string Title { get; set; }
 
         public Guid CourseId { get; set; }

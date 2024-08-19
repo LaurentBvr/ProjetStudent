@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetEtudiantBackend.Models;
+using StudentBackend.Models;
 
 namespace ProjetEtudiantBackend.Entity
 {
@@ -11,7 +12,11 @@ namespace ProjetEtudiantBackend.Entity
             public DbSet<Enrollment> Enrollments { get; set; }
             public DbSet<Assignment> Assignments { get; set; }
 
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            public DbSet<FileAssignment> FileAssignments { get; set; }
+            
+            public DbSet<Inscription> Inscriptions { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
                 if (!optionsBuilder.IsConfigured)
                 {
@@ -26,7 +31,13 @@ namespace ProjetEtudiantBackend.Entity
                 }
 
             }
-        protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        { //Configuration de la relation entre Course et Inscription 
+          modelBuilder.Entity<Inscription>() 
+                      .HasOne(i => i.Course) 
+                      .WithMany(c => c.Inscriptions) 
+                      .HasForeignKey(i => i.CourseId); 
+          base.OnModelCreating(modelBuilder); }
         }
     }
 
